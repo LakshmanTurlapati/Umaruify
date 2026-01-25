@@ -1,0 +1,8 @@
+# Claude configuration
+.claude/
+
+# Archived files
+archive/
+
+# macOS
+.DS_Store

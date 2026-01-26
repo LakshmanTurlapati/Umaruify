@@ -1,0 +1,80 @@
+/* Reset all inherited styles for complete isolation */
+#umaruify-container,
+#umaruify-container * {
+  all: initial !important;
+  box-sizing: border-box !important;
+}
+
+#umaruify-container {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 612px !important;
+  height: 352px !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+#umaruify-container.hidden {
+  display: none !important;
+}
+
+/* Re-enable pointer events for interactive elements */
+#umaruify-container canvas {
+  pointer-events: auto !important;
+}
+
+/* Sprite layer container */
+#umaruify-sprite-layer {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 612px !important;
+  height: 352px !important;
+  pointer-events: none !important;
+  z-index: 20 !important;
+}
+
+/* Hand sprite */
+#umaruify-hand-sprite {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  display: none !important;
+  z-index: 25 !important;
+}
+
+/* Keyboard sprite */
+#umaruify-keyboard-sprite {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  display: none !important;
+  z-index: 24 !important;
+}
+
+/* Mouse background sprite */
+#umaruify-mouse-bg {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: 5 !important;
+}
+
+/* Live2D canvas container */
+#umaruify-live2d-container {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 612px !important;
+  height: 352px !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
+#umaruify-live2d-canvas {
+  width: 612px !important;
+  height: 352px !important;
+}

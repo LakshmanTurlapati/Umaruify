@@ -138,7 +138,7 @@ window.UmaruifyLive2DController = {
       if (!this.mouseTracking || !this.model) return;
 
       const rawX = (e.clientX / window.innerWidth - 0.5) * 2;
-      const rawY = (e.clientY / window.innerHeight - 0.5) * 2;
+      const rawY = -((e.clientY / window.innerHeight - 0.5) * 2); // Inverted Y axis
 
       const sensitivity = this.config.mouseSensitivity;
       const x = Math.max(-30, Math.min(30, rawX * sensitivity * 30));

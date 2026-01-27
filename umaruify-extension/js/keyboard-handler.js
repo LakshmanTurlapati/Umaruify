@@ -49,15 +49,22 @@ window.UmaruifyKeyboardHandler = {
       keyCode = window.UmaruifyConfigMapping.codeToKeyCode(e.code);
     }
 
-    if (!keyCode) return;
+    console.log('[Umaruify] KeyboardHandler: keydown - key:', e.key, 'code:', e.code, 'keyCode:', keyCode);
+
+    if (!keyCode) {
+      console.log('[Umaruify] KeyboardHandler: keydown - no keyCode, ignoring');
+      return;
+    }
 
     // Check if this is a mapped key
     const spriteIndex = window.UmaruifyConfigMapping.getSpriteIndex(keyCode);
+    console.log('[Umaruify] KeyboardHandler: keydown - spriteIndex for keyCode', keyCode, ':', spriteIndex);
 
     if (spriteIndex !== null && !this.pressedKeys.has(keyCode)) {
       // New key press
       this.pressedKeys.set(keyCode, spriteIndex);
       this.lastSpriteIndex = spriteIndex;
+      console.log('[Umaruify] KeyboardHandler: keydown - registered new key, calling onKeyPress');
 
       if (this.onKeyPress) {
         this.onKeyPress(keyCode, spriteIndex, this.getState());
@@ -66,6 +73,10 @@ window.UmaruifyKeyboardHandler = {
       if (this.onStateChange) {
         this.onStateChange(this.getState());
       }
+    } else if (spriteIndex === null) {
+      console.log('[Umaruify] KeyboardHandler: keydown - key not mapped');
+    } else {
+      console.log('[Umaruify] KeyboardHandler: keydown - key already pressed');
     }
   },
 
@@ -80,7 +91,14 @@ window.UmaruifyKeyboardHandler = {
       keyCode = window.UmaruifyConfigMapping.codeToKeyCode(e.code);
     }
 
-    if (!keyCode) return;
+    console.log('[Umaruify] KeyboardHandler: keyup - key:', e.key, 'code:', e.code, 'keyCode:', keyCode);
+
+    if (!keyCode) {
+      console.log('[Umaruify] KeyboardHandler: keyup - no keyCode, ignoring');
+      return;
+    }
+
+    console.log('[Umaruify] KeyboardHandler: keyup - pressedKeys has keyCode:', this.pressedKeys.has(keyCode), 'pressedKeys:', Array.from(this.pressedKeys.keys()));
 
     if (this.pressedKeys.has(keyCode)) {
       this.pressedKeys.delete(keyCode);
@@ -93,6 +111,8 @@ window.UmaruifyKeyboardHandler = {
         this.lastSpriteIndex = -1;
       }
 
+      console.log('[Umaruify] KeyboardHandler: keyup - calling onKeyRelease, hasCallback:', !!this.onKeyRelease);
+
       if (this.onKeyRelease) {
         this.onKeyRelease(keyCode, this.getState());
       }
@@ -100,6 +120,8 @@ window.UmaruifyKeyboardHandler = {
       if (this.onStateChange) {
         this.onStateChange(this.getState());
       }
+    } else {
+      console.log('[Umaruify] KeyboardHandler: keyup - key not in pressedKeys, ignoring');
     }
   },
 

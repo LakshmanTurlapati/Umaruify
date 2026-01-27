@@ -29,7 +29,15 @@ window.UmaruifyLive2DController = {
     ParamMouseRightDown: 0
   },
 
-  animationFrame: null,
+  // Parameter indices map for direct access
+  parameterIndices: null,
+  cubismModel: null,
+  coreModel: null,
+  parameterMethod: null,
+
+  // Debug logging state
+  _lastLoggedHandDown: null,
+  _lastLoggedIndex: null,
 
   /**
    * Initialize the Live2D canvas and load the model
@@ -95,10 +103,11 @@ window.UmaruifyLive2DController = {
       this.configureModel();
       this.app.stage.addChild(this.model);
       this.setupMouseTracking();
-      this.startParameterUpdateLoop();
+      this.setupParameterOverride();
 
       this.initialized = true;
       console.log('[Umaruify] Live2DController: Model loaded successfully');
+
       return true;
     } catch (error) {
       console.error('[Umaruify] Live2DController: Failed to load model', error);
@@ -161,33 +170,148 @@ window.UmaruifyLive2DController = {
     });
   },
 
-  startParameterUpdateLoop() {
-    const updateLoop = () => {
-      this.applyParameters();
-      this.animationFrame = requestAnimationFrame(updateLoop);
-    };
-    updateLoop();
-  },
-
-  applyParameters() {
+  /**
+   * Setup parameter override by hooking into motionManager update
+   * This ensures our parameters are applied AFTER the normal animation update
+   */
+  setupParameterOverride() {
     if (!this.model || !this.model.internalModel) return;
 
-    try {
-      const coreModel = this.model.internalModel.coreModel;
+    const internalModel = this.model.internalModel;
+    const coreModel = internalModel.coreModel;
 
-      Object.entries(this.params).forEach(([name, value]) => {
-        const index = coreModel.getParameterIndex(name);
-        if (index >= 0) {
-          coreModel.setParameterValueByIndex(index, value);
-        }
+    // Debug: Log the coreModel structure to understand what's available
+    console.log('[Umaruify] coreModel type:', coreModel.constructor.name);
+    console.log('[Umaruify] coreModel._model:', coreModel._model);
+
+    // Store reference to coreModel for parameter setting
+    this.coreModel = coreModel;
+
+    // Try to build parameter index map using multiple approaches
+    this.parameterIndices = {};
+    this.parameterMethod = null;
+
+    // Approach 1: coreModel._model has getParameterCount (inner Cubism model)
+    const innerModel = coreModel._model;
+    if (innerModel && typeof innerModel.getParameterCount === 'function') {
+      console.log('[Umaruify] Using inner model (_model) for parameters');
+      this.cubismModel = innerModel;
+      this.buildParameterIndices(innerModel);
+      this.parameterMethod = 'innerModel';
+    }
+    // Approach 2: coreModel has getParameterIndex (direct method)
+    else if (typeof coreModel.getParameterIndex === 'function') {
+      console.log('[Umaruify] Using coreModel.getParameterIndex');
+      this.cubismModel = coreModel;
+      this.parameterMethod = 'getParameterIndex';
+    }
+    // Approach 3: Use internalModel's parameter update method
+    else {
+      console.log('[Umaruify] Will use internalModel for parameters');
+      this.parameterMethod = 'internalModel';
+    }
+
+    // Hook into motion manager update to apply our parameters after
+    if (internalModel.motionManager) {
+      const originalUpdate = internalModel.motionManager.update.bind(internalModel.motionManager);
+      const self = this;
+
+      internalModel.motionManager.update = function(model, now) {
+        // Call original update first
+        const result = originalUpdate(model, now);
+
+        // Then apply our parameter overrides
+        self.applyParameterOverrides();
+
+        return result;
+      };
+      console.log('[Umaruify] MotionManager update hooked successfully');
+    } else {
+      console.warn('[Umaruify] MotionManager not found, using ticker fallback');
+      // Fallback: use PIXI ticker to apply parameters
+      const self = this;
+      this.app.ticker.add(() => {
+        self.applyParameterOverrides();
       });
-    } catch (error) {
-      // Silently handle
+      console.log('[Umaruify] Using PIXI ticker for parameter updates');
     }
   },
 
+  /**
+   * Build parameter indices map from a Cubism model
+   */
+  buildParameterIndices(model) {
+    if (!model || typeof model.getParameterCount !== 'function') return;
+
+    const count = model.getParameterCount();
+    for (let i = 0; i < count; i++) {
+      const idObj = model.getParameterId(i);
+      let name = '';
+      if (typeof idObj === 'string') {
+        name = idObj;
+      } else if (idObj && idObj.s) {
+        name = idObj.s;
+      } else if (idObj && typeof idObj.getString === 'function') {
+        name = idObj.getString();
+      } else {
+        name = String(idObj);
+      }
+
+      this.parameterIndices[name] = i;
+    }
+    console.log('[Umaruify] Parameter indices built:', Object.keys(this.parameterIndices));
+  },
+
+  /**
+   * Apply parameter overrides to the Cubism model
+   */
+  applyParameterOverrides() {
+    if (!this.model || !this.model.internalModel) return;
+
+    const coreModel = this.coreModel;
+    if (!coreModel) return;
+
+    // Only log when CatParamLeftHandDown changes (to avoid spam)
+    const handDown = this.params.CatParamLeftHandDown;
+    if (this._lastLoggedHandDown !== handDown) {
+      console.log('[Umaruify] Live2D: applyParameterOverrides - CatParamLeftHandDown:', handDown, 'method:', this.parameterMethod);
+      this._lastLoggedHandDown = handDown;
+    }
+
+    Object.entries(this.params).forEach(([name, value]) => {
+      try {
+        if (this.parameterMethod === 'innerModel' && this.cubismModel) {
+          // Use pre-built indices with inner model
+          const index = this.parameterIndices[name];
+          if (index !== undefined && index >= 0) {
+            this.cubismModel.setParameterValueByIndex(index, value);
+          }
+        } else if (this.parameterMethod === 'getParameterIndex') {
+          // Use getParameterIndex directly on coreModel
+          const index = coreModel.getParameterIndex(name);
+          if (name === 'CatParamLeftHandDown' && this._lastLoggedHandDown !== this._lastLoggedIndex) {
+            console.log('[Umaruify] Live2D: getParameterIndex("CatParamLeftHandDown") =', index);
+            this._lastLoggedIndex = this._lastLoggedHandDown;
+          }
+          if (index >= 0) {
+            coreModel.setParameterValueByIndex(index, value);
+          }
+        } else {
+          // Fallback: try coreModel.setParameterValueById if available
+          if (typeof coreModel.setParameterValueById === 'function') {
+            coreModel.setParameterValueById(name, value);
+          }
+        }
+      } catch (e) {
+        console.error('[Umaruify] Live2D: applyParameterOverrides error for', name, ':', e.message);
+      }
+    });
+  },
+
   setKeyboardPressed(pressed) {
-    this.params.CatParamLeftHandDown = pressed ? 1 : 0;
+    const value = pressed ? 1 : 0;
+    this.params.CatParamLeftHandDown = value;
+    console.log('[Umaruify] Live2D: setKeyboardPressed -', pressed, '-> CatParamLeftHandDown =', value);
   },
 
   setMouseLeftPressed(pressed) {
@@ -207,9 +331,10 @@ window.UmaruifyLive2DController = {
   },
 
   destroy() {
-    if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
-    }
+    this.parameterIndices = null;
+    this.cubismModel = null;
+    this.coreModel = null;
+    this.parameterMethod = null;
     if (this.model) {
       this.app.stage.removeChild(this.model);
       this.model.destroy();

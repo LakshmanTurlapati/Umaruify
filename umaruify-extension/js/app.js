@@ -69,24 +69,37 @@ window.UmaruifyApp = {
   setupKeyboardCallbacks() {
     // Handle key press
     window.UmaruifyKeyboardHandler.onKeyPress = (keyCode, spriteIndex, state) => {
+      console.log('[Umaruify] App: Key pressed - keyCode:', keyCode, 'spriteIndex:', spriteIndex, 'state:', state);
+
       // Update Live2D parameter (CatParamLeftHandDown = 1)
       window.UmaruifyLive2DController.setKeyboardPressed(true);
+      console.log('[Umaruify] App: Set keyboard pressed = true');
 
-      // Show hand sprite based on sprite index
+      // Show hand sprite and keyboard highlight based on sprite index
       window.UmaruifySpriteOverlay.showHand(spriteIndex);
+      window.UmaruifySpriteOverlay.showKeyboard(spriteIndex);
+      console.log('[Umaruify] App: Called showHand and showKeyboard with index:', spriteIndex);
     };
 
     // Handle key release
     window.UmaruifyKeyboardHandler.onKeyRelease = (keyCode, state) => {
+      console.log('[Umaruify] App: Key released - keyCode:', keyCode, 'state:', state);
+
       // If still keys pressed, show the current sprite
       if (state.isActive) {
+        console.log('[Umaruify] App: Still keys pressed, updating to spriteIndex:', state.currentSpriteIndex);
         window.UmaruifySpriteOverlay.showHand(state.currentSpriteIndex);
+        window.UmaruifySpriteOverlay.showKeyboard(state.currentSpriteIndex);
       } else {
-        // No keys pressed - hide hand sprite and reset Live2D parameter
+        console.log('[Umaruify] App: No keys pressed, hiding sprites');
+        // No keys pressed - hide sprites and reset Live2D parameter
         window.UmaruifySpriteOverlay.hideHand();
+        window.UmaruifySpriteOverlay.hideKeyboard();
         window.UmaruifyLive2DController.setKeyboardPressed(false);
       }
     };
+
+    console.log('[Umaruify] App: Keyboard callbacks configured');
   },
 
   /**

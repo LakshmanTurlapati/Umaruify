@@ -39,10 +39,22 @@ window.UmaruifySpriteOverlay = {
     this.paths.keyboard = container.dataset.keyboardSprites || '';
     this.paths.mouseBg = container.dataset.mouseBg || '';
 
+    console.log('[Umaruify] SpriteOverlay: Paths loaded -', {
+      hand: this.paths.hand,
+      keyboard: this.paths.keyboard,
+      mouseBg: this.paths.mouseBg
+    });
+
     // Get sprite elements created by content script
     this.handSprite = document.getElementById('umaruify-hand-sprite');
     this.keyboardSprite = document.getElementById('umaruify-keyboard-sprite');
     this.mouseBgSprite = document.getElementById('umaruify-mouse-bg');
+
+    console.log('[Umaruify] SpriteOverlay: Elements found -', {
+      handSprite: !!this.handSprite,
+      keyboardSprite: !!this.keyboardSprite,
+      mouseBgSprite: !!this.mouseBgSprite
+    });
 
     // Preload sprites
     this.preloadSprites();
@@ -76,24 +88,42 @@ window.UmaruifySpriteOverlay = {
    * @param {number} index - Sprite index (0-49)
    */
   showHand(index) {
-    if (!this.enabled || index < 0 || index >= 50 || !this.handSprite) return;
+    console.log('[Umaruify] SpriteOverlay: showHand called with index:', index);
+
+    if (!this.enabled) {
+      console.log('[Umaruify] SpriteOverlay: showHand - disabled, skipping');
+      return;
+    }
+    if (index < 0 || index >= 50) {
+      console.log('[Umaruify] SpriteOverlay: showHand - index out of range:', index);
+      return;
+    }
+    if (!this.handSprite) {
+      console.log('[Umaruify] SpriteOverlay: showHand - handSprite element not found');
+      return;
+    }
 
     if (index !== this.currentHandIndex) {
       this.currentHandIndex = index;
       // Use preloaded image src for faster response
       if (this.handImages[index] && this.handImages[index].complete) {
         this.handSprite.src = this.handImages[index].src;
+        console.log('[Umaruify] SpriteOverlay: showHand - using preloaded image:', this.handImages[index].src);
       } else {
-        this.handSprite.src = `${this.paths.hand}${index}.png`;
+        const src = `${this.paths.hand}${index}.png`;
+        this.handSprite.src = src;
+        console.log('[Umaruify] SpriteOverlay: showHand - loading image:', src);
       }
     }
     this.handSprite.style.display = 'block';
+    console.log('[Umaruify] SpriteOverlay: showHand - display set to block, current style:', this.handSprite.style.display);
   },
 
   /**
    * Hide hand sprite
    */
   hideHand() {
+    console.log('[Umaruify] SpriteOverlay: hideHand called');
     if (this.handSprite) {
       this.handSprite.style.display = 'none';
     }
@@ -105,24 +135,42 @@ window.UmaruifySpriteOverlay = {
    * @param {number} index - Sprite index (0-49)
    */
   showKeyboard(index) {
-    if (!this.enabled || index < 0 || index >= 50 || !this.keyboardSprite) return;
+    console.log('[Umaruify] SpriteOverlay: showKeyboard called with index:', index);
+
+    if (!this.enabled) {
+      console.log('[Umaruify] SpriteOverlay: showKeyboard - disabled, skipping');
+      return;
+    }
+    if (index < 0 || index >= 50) {
+      console.log('[Umaruify] SpriteOverlay: showKeyboard - index out of range:', index);
+      return;
+    }
+    if (!this.keyboardSprite) {
+      console.log('[Umaruify] SpriteOverlay: showKeyboard - keyboardSprite element not found');
+      return;
+    }
 
     if (index !== this.currentKeyboardIndex) {
       this.currentKeyboardIndex = index;
       // Use preloaded image src for faster response
       if (this.keyboardImages[index] && this.keyboardImages[index].complete) {
         this.keyboardSprite.src = this.keyboardImages[index].src;
+        console.log('[Umaruify] SpriteOverlay: showKeyboard - using preloaded image:', this.keyboardImages[index].src);
       } else {
-        this.keyboardSprite.src = `${this.paths.keyboard}${index}.png`;
+        const src = `${this.paths.keyboard}${index}.png`;
+        this.keyboardSprite.src = src;
+        console.log('[Umaruify] SpriteOverlay: showKeyboard - loading image:', src);
       }
     }
     this.keyboardSprite.style.display = 'block';
+    console.log('[Umaruify] SpriteOverlay: showKeyboard - display set to block');
   },
 
   /**
    * Hide keyboard highlight sprite
    */
   hideKeyboard() {
+    console.log('[Umaruify] SpriteOverlay: hideKeyboard called');
     if (this.keyboardSprite) {
       this.keyboardSprite.style.display = 'none';
     }

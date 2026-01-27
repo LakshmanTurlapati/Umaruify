@@ -37,6 +37,18 @@ Umaruify brings an adorable interactive anime companion to your web browsing exp
 - **Lightweight** - Minimal performance impact with optimized rendering
 - **Easy Toggle** - Enable/disable with a single click from the popup
 
+## Demo
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=WtwWP2oQzw0">
+    <img src="https://img.youtube.com/vi/WtwWP2oQzw0/maxresdefault.jpg" alt="Umaruify Demo Video" width="80%">
+  </a>
+</p>
+
+<p align="center">
+  <em>Click the image above to watch the demo video</em>
+</p>
+
 ## Screenshots
 
 <p align="center">
@@ -221,10 +233,16 @@ Contributions are welcome! Here's how you can help:
 </p>
 
 <p align="center">
-  <strong>Made by Lakshman Turlapati</strong>
+  <strong>Made by <a href="https://www.parzival.live">Lakshman Turlapati</a></strong>
 </p>
 
 <p align="center">
+  <a href="https://staging.d364wjsbiwvjpv.amplifyapp.com">
+    <img src="https://img.shields.io/badge/Live_Demo-Visit_Site-c4836a?style=for-the-badge" alt="Live Demo">
+  </a>
+  <a href="https://www.parzival.live">
+    <img src="https://img.shields.io/badge/More_Works-parzival.live-e8a090?style=for-the-badge" alt="More Works">
+  </a>
   <a href="https://github.com/LakshmanTurlapati">
     <img src="https://img.shields.io/badge/GitHub-LakshmanTurlapati-181717?style=for-the-badge&logo=github" alt="GitHub">
   </a>

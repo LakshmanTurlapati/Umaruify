@@ -13,39 +13,136 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #fff0f3 0%, #ffe4e9 50%, #ffd6de 100%);
+      background: linear-gradient(135deg, #fdf6f3 0%, #faf3ee 50%, #f7efe8 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 40px 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Petals container */
+    .petals-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    /* Individual petal */
+    .petal {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(ellipse at center, #ffd4cc 0%, #ffb8ad 50%, #ffa399 100%);
+      border-radius: 50% 0 50% 50%;
+      opacity: 0.45;
+      transform-origin: center center;
+    }
+
+    .petal:nth-child(1) { left: 5%; animation: fall-sway-left 12s linear infinite; animation-delay: 0s; width: 10px; height: 10px; }
+    .petal:nth-child(2) { left: 15%; animation: fall-sway-right 15s linear infinite; animation-delay: 2s; width: 8px; height: 8px; }
+    .petal:nth-child(3) { left: 25%; animation: fall-sway-left 11s linear infinite; animation-delay: 4s; width: 12px; height: 12px; }
+    .petal:nth-child(4) { left: 35%; animation: fall-sway-right 14s linear infinite; animation-delay: 1s; width: 9px; height: 9px; }
+    .petal:nth-child(5) { left: 45%; animation: fall-sway-left 13s linear infinite; animation-delay: 3s; width: 11px; height: 11px; }
+    .petal:nth-child(6) { left: 55%; animation: fall-sway-right 16s linear infinite; animation-delay: 5s; width: 7px; height: 7px; }
+    .petal:nth-child(7) { left: 65%; animation: fall-sway-left 14s linear infinite; animation-delay: 6s; width: 10px; height: 10px; }
+    .petal:nth-child(8) { left: 75%; animation: fall-sway-right 12s linear infinite; animation-delay: 2.5s; width: 8px; height: 8px; }
+    .petal:nth-child(9) { left: 85%; animation: fall-sway-left 15s linear infinite; animation-delay: 1.5s; width: 11px; height: 11px; }
+    .petal:nth-child(10) { left: 95%; animation: fall-sway-right 13s linear infinite; animation-delay: 4.5s; width: 9px; height: 9px; }
+    .petal:nth-child(11) { left: 10%; animation: fall-sway-right 11s linear infinite; animation-delay: 7s; width: 8px; height: 8px; }
+    .petal:nth-child(12) { left: 90%; animation: fall-sway-left 14s linear infinite; animation-delay: 3.5s; width: 10px; height: 10px; }
+
+    @keyframes fall-sway-left {
+      0% {
+        top: -20px;
+        transform: rotate(0deg) translateX(0px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      25% {
+        transform: rotate(90deg) translateX(-20px);
+      }
+      50% {
+        transform: rotate(180deg) translateX(15px);
+      }
+      75% {
+        transform: rotate(270deg) translateX(-25px);
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        top: 100%;
+        transform: rotate(360deg) translateX(10px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fall-sway-right {
+      0% {
+        top: -20px;
+        transform: rotate(0deg) translateX(0px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      25% {
+        transform: rotate(-90deg) translateX(20px);
+      }
+      50% {
+        transform: rotate(-180deg) translateX(-15px);
+      }
+      75% {
+        transform: rotate(-270deg) translateX(25px);
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        top: 100%;
+        transform: rotate(-360deg) translateX(-10px);
+        opacity: 0;
+      }
     }
 
     .policy-card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.7);
       border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(212, 98, 122, 0.15);
+      box-shadow: 0 10px 40px rgba(150, 100, 80, 0.12);
       max-width: 600px;
       width: 100%;
       padding: 40px;
-      border: 1px solid rgba(255, 182, 193, 0.3);
+      border: 1px solid rgba(200, 150, 130, 0.2);
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(10px);
     }
 
     .header {
       text-align: center;
       margin-bottom: 30px;
       padding-bottom: 20px;
-      border-bottom: 2px solid rgba(212, 98, 122, 0.2);
+      border-bottom: 2px solid rgba(200, 150, 130, 0.2);
     }
 
     .header h1 {
-      color: #d4627a;
+      color: #c4836a;
       font-size: 28px;
       margin-bottom: 8px;
     }
 
     .header .subtitle {
-      color: #9a7a8a;
+      color: #8a6a5a;
       font-size: 14px;
     }
 
@@ -54,7 +151,7 @@
     }
 
     .section h2 {
-      color: #d4627a;
+      color: #c4836a;
       font-size: 16px;
       margin-bottom: 10px;
       display: flex;
@@ -66,8 +163,9 @@
       content: '';
       width: 4px;
       height: 16px;
-      background: linear-gradient(to bottom, #ffb6c1, #ff7089);
+      background: linear-gradient(to bottom, #e8a090, #d4836a);
       border-radius: 2px;
+      flex-shrink: 0;
     }
 
     .section p, .section li {
@@ -86,15 +184,15 @@
     }
 
     .highlight-box {
-      background: linear-gradient(135deg, #fff5f7 0%, #ffecef 100%);
-      border-left: 4px solid #e8879b;
+      background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+      border-left: 4px solid #d4836a;
       padding: 16px 20px;
       border-radius: 0 12px 12px 0;
       margin: 20px 0;
     }
 
     .highlight-box p {
-      color: #6b4a5e;
+      color: #5c4a45;
       font-weight: 500;
     }
 
@@ -102,11 +200,11 @@
       text-align: center;
       margin-top: 30px;
       padding-top: 20px;
-      border-top: 1px solid rgba(212, 98, 122, 0.2);
+      border-top: 1px solid rgba(200, 150, 130, 0.2);
     }
 
     .footer p {
-      color: #9a7a8a;
+      color: #a08070;
       font-size: 12px;
     }
 
@@ -114,9 +212,117 @@
       margin-top: 8px;
       font-style: italic;
     }
+
+    /* Tablet */
+    @media (max-width: 768px) {
+      body {
+        padding: 30px 16px;
+      }
+
+      .policy-card {
+        padding: 30px 24px;
+        border-radius: 16px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .section h2 {
+        font-size: 15px;
+      }
+
+      .section p, .section li {
+        font-size: 13px;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 12px;
+        align-items: flex-start;
+      }
+
+      .policy-card {
+        padding: 24px 18px;
+        border-radius: 14px;
+      }
+
+      .header {
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .header .subtitle {
+        font-size: 13px;
+      }
+
+      .section {
+        margin-bottom: 20px;
+      }
+
+      .section h2 {
+        font-size: 14px;
+        gap: 6px;
+      }
+
+      .section h2::before {
+        width: 3px;
+        height: 14px;
+      }
+
+      .section p, .section li {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .section ul {
+        margin-left: 16px;
+      }
+
+      .highlight-box {
+        padding: 14px 16px;
+        margin: 16px 0;
+      }
+
+      .footer {
+        margin-top: 24px;
+        padding-top: 16px;
+      }
+
+      .footer p {
+        font-size: 11px;
+      }
+
+      /* Smaller petals on mobile */
+      .petal {
+        opacity: 0.4;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Floating rose petals -->
+  <div class="petals-container">
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+  </div>
+
   <div class="policy-card">
     <div class="header">
       <h1>Umaruify</h1>

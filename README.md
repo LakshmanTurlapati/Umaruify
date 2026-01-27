@@ -1,8 +1,4 @@
 <p align="center">
-  <img src="Extras/banner.png" alt="Umaruify Banner" width="100%">
-</p>
-
-<p align="center">
   <img src="umaruify-extension/icons/icon128.png" alt="Umaruify Logo" width="80">
 </p>
 
@@ -102,11 +98,6 @@ flowchart TB
     PixiJS --> Live2DModel
     Sprites --> HandSprites
     Sprites --> KBSprites
-
-    style Extension fill:#fff0f3,stroke:#d4627a
-    style ContentScript fill:#ffe4e9,stroke:#ff91a4
-    style Modules fill:#ffd6de,stroke:#ff7089
-    style Rendering fill:#ffb6c1,stroke:#d4627a
 ```
 
 ### Component Overview
@@ -224,6 +215,10 @@ Contributions are welcome! Here's how you can help:
 - The Bongo Cat meme for inspiration
 
 ---
+
+<p align="center">
+  <img src="Extras/banner.png" alt="Umaruify Banner" width="100%">
+</p>
 
 <p align="center">
   <strong>Made by Lakshman Turlapati</strong>

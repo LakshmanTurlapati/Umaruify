@@ -202,6 +202,51 @@ class SpriteOverlay {
             this.handSprite.style.display = 'none';
         }
     }
+
+    /**
+     * Cleanup and destroy the sprite overlay
+     */
+    destroy() {
+        console.log('SpriteOverlay: Destroying...');
+
+        // Hide all sprites
+        this.hideHand();
+        this.hideKeyboard();
+
+        // Remove DOM elements
+        if (this.handSprite && this.handSprite.parentNode) {
+            this.handSprite.parentNode.removeChild(this.handSprite);
+        }
+        if (this.keyboardSprite && this.keyboardSprite.parentNode) {
+            this.keyboardSprite.parentNode.removeChild(this.keyboardSprite);
+        }
+        if (this.mouseBgSprite && this.mouseBgSprite.parentNode) {
+            this.mouseBgSprite.parentNode.removeChild(this.mouseBgSprite);
+        }
+
+        // Remove sprite layer
+        const spriteLayer = document.getElementById('sprite-layer');
+        if (spriteLayer && spriteLayer.parentNode) {
+            spriteLayer.parentNode.removeChild(spriteLayer);
+        }
+
+        // Clear preloaded images
+        this.handImages = [];
+        this.keyboardImages = [];
+
+        // Clear references
+        this.handSprite = null;
+        this.keyboardSprite = null;
+        this.mouseBgSprite = null;
+        this.container = null;
+
+        // Reset state
+        this.currentHandIndex = -1;
+        this.currentKeyboardIndex = -1;
+        this.enabled = true;
+
+        console.log('SpriteOverlay: Destroyed');
+    }
 }
 
 // Export as singleton

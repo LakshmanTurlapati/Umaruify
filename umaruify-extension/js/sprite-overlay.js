@@ -203,5 +203,37 @@ window.UmaruifySpriteOverlay = {
     if (this.mouseBgSprite) {
       this.mouseBgSprite.style.display = visible ? 'block' : 'none';
     }
+  },
+
+  /**
+   * Cleanup and destroy the sprite overlay
+   */
+  destroy() {
+    console.log('[Umaruify] SpriteOverlay: Destroying...');
+
+    // Hide all sprites
+    this.hideHand();
+    this.hideKeyboard();
+
+    // Clear preloaded images
+    this.handImages = [];
+    this.keyboardImages = [];
+
+    // Clear DOM element references
+    this.handSprite = null;
+    this.keyboardSprite = null;
+    this.mouseBgSprite = null;
+
+    // Reset state
+    this.currentHandIndex = -1;
+    this.currentKeyboardIndex = -1;
+    this.enabled = true;
+    this.paths = {
+      hand: '',
+      keyboard: '',
+      mouseBg: ''
+    };
+
+    console.log('[Umaruify] SpriteOverlay: Destroyed');
   }
 };

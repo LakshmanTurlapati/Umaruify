@@ -5,20 +5,17 @@
   'use strict';
 
   const enabledCheckbox = document.getElementById('enabled');
-  const mouseTrackingCheckbox = document.getElementById('mouse-tracking');
 
-  // Load saved settings
-  chrome.storage.local.get(['enabled', 'mouseTracking'], (result) => {
+  // Load saved settings (mouse tracking always enabled by default)
+  chrome.storage.local.get(['enabled'], (result) => {
     enabledCheckbox.checked = result.enabled !== false;
-    mouseTrackingCheckbox.checked = result.mouseTracking !== false;
   });
+
+  // Ensure mouse tracking is always enabled
+  chrome.storage.local.set({ mouseTracking: true });
 
   // Save settings on change
   enabledCheckbox.addEventListener('change', () => {
     chrome.storage.local.set({ enabled: enabledCheckbox.checked });
-  });
-
-  mouseTrackingCheckbox.addEventListener('change', () => {
-    chrome.storage.local.set({ mouseTracking: mouseTrackingCheckbox.checked });
   });
 })();

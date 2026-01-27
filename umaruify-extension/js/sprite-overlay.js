@@ -115,7 +115,7 @@ window.UmaruifySpriteOverlay = {
         console.log('[Umaruify] SpriteOverlay: showHand - loading image:', src);
       }
     }
-    this.handSprite.style.display = 'block';
+    this.handSprite.style.setProperty('display', 'block', 'important');
     console.log('[Umaruify] SpriteOverlay: showHand - display set to block, current style:', this.handSprite.style.display);
   },
 
@@ -125,7 +125,10 @@ window.UmaruifySpriteOverlay = {
   hideHand() {
     console.log('[Umaruify] SpriteOverlay: hideHand called');
     if (this.handSprite) {
-      this.handSprite.style.display = 'none';
+      this.handSprite.style.setProperty('display', 'none', 'important');
+      // Verify the change took effect
+      const computed = window.getComputedStyle(this.handSprite).display;
+      console.log('[Umaruify] SpriteOverlay: hideHand - set to none, computed:', computed);
     }
     this.currentHandIndex = -1;
   },
@@ -162,7 +165,7 @@ window.UmaruifySpriteOverlay = {
         console.log('[Umaruify] SpriteOverlay: showKeyboard - loading image:', src);
       }
     }
-    this.keyboardSprite.style.display = 'block';
+    this.keyboardSprite.style.setProperty('display', 'block', 'important');
     console.log('[Umaruify] SpriteOverlay: showKeyboard - display set to block');
   },
 
@@ -172,7 +175,10 @@ window.UmaruifySpriteOverlay = {
   hideKeyboard() {
     console.log('[Umaruify] SpriteOverlay: hideKeyboard called');
     if (this.keyboardSprite) {
-      this.keyboardSprite.style.display = 'none';
+      this.keyboardSprite.style.setProperty('display', 'none', 'important');
+      // Verify the change took effect
+      const computed = window.getComputedStyle(this.keyboardSprite).display;
+      console.log('[Umaruify] SpriteOverlay: hideKeyboard - set to none, computed:', computed);
     }
     this.currentKeyboardIndex = -1;
   },

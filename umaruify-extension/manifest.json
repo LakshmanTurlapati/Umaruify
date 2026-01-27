@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Umaruify",
   "version": "1.0.0",
-  "description": "Cute Bongo Cat overlay that reacts to your keyboard",
+  "description": "Umaru-chan as your companion, mimicking your every action",
   "permissions": ["storage"],
   "action": {
     "default_popup": "popup/popup.html",

@@ -149,6 +149,12 @@ sequenceDiagram
 
 ## Installation
 
+### From Chrome Web Store
+
+<a href="https://chromewebstore.google.com/detail/umaruify/jicgakgfdpkafkpbgfialgembkmhapfo">
+  <img src="https://img.shields.io/badge/Chrome_Web_Store-Install-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Install from Chrome Web Store">
+</a>
+
 ### From Source (Developer Mode)
 
 1. Clone the repository:
@@ -239,6 +245,9 @@ Contributions are welcome! Here's how you can help:
 <p align="center">
   <a href="https://staging.d364wjsbiwvjpv.amplifyapp.com">
     <img src="https://img.shields.io/badge/Live_Demo-Visit_Site-c4836a?style=for-the-badge" alt="Live Demo">
+  </a>
+  <a href="https://chromewebstore.google.com/detail/umaruify/jicgakgfdpkafkpbgfialgembkmhapfo">
+    <img src="https://img.shields.io/badge/Chrome_Web_Store-Install-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Chrome Web Store">
   </a>
   <a href="https://www.parzival.live">
     <img src="https://img.shields.io/badge/More_Works-parzival.live-e8a090?style=for-the-badge" alt="More Works">

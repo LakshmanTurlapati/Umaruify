@@ -15,6 +15,7 @@
   pointer-events: none !important;
   overflow: hidden !important;
   background: transparent !important;
+  transform-origin: bottom left !important;
 }
 
 #umaruify-container.hidden {

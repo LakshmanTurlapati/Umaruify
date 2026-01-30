@@ -74,9 +74,13 @@
 
     console.log('[Umaruify] Container created');
 
-    // Check storage for enabled state
-    chrome.storage.local.get(['enabled'], (result) => {
+    // Check storage for enabled state and scale
+    chrome.storage.local.get(['enabled', 'scale'], (result) => {
       const isEnabled = result.enabled !== false;
+      const scale = (result.scale || 100) / 100;
+
+      // Apply initial scale (use setProperty with important to override CSS reset)
+      container.style.setProperty('transform', `scale(${scale})`, 'important');
 
       if (isEnabled) {
         // Initialize the app (modules are already loaded via manifest)
@@ -99,6 +103,11 @@
           if (isEnabled && window.UmaruifyApp && !window.UmaruifyApp.initialized) {
             window.UmaruifyApp.init();
           }
+        }
+
+        if (changes.scale !== undefined) {
+          const scale = changes.scale.newValue / 100;
+          container.style.setProperty('transform', `scale(${scale})`, 'important');
         }
 
         // Forward settings changes to the app

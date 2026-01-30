@@ -5,10 +5,15 @@
   'use strict';
 
   const enabledCheckbox = document.getElementById('enabled');
+  const sizeSlider = document.getElementById('size');
+  const sizeValue = document.getElementById('size-value');
 
   // Load saved settings (mouse tracking always enabled by default)
-  chrome.storage.local.get(['enabled'], (result) => {
+  chrome.storage.local.get(['enabled', 'scale'], (result) => {
     enabledCheckbox.checked = result.enabled !== false;
+    const scale = result.scale || 100;
+    sizeSlider.value = scale;
+    sizeValue.textContent = scale + '%';
   });
 
   // Ensure mouse tracking is always enabled
@@ -17,5 +22,12 @@
   // Save settings on change
   enabledCheckbox.addEventListener('change', () => {
     chrome.storage.local.set({ enabled: enabledCheckbox.checked });
+  });
+
+  // Save scale on change
+  sizeSlider.addEventListener('input', () => {
+    const value = sizeSlider.value;
+    sizeValue.textContent = value + '%';
+    chrome.storage.local.set({ scale: parseInt(value) });
   });
 })();
